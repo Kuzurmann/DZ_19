@@ -19,11 +19,7 @@ class AuthView(Resource):
 
         return tokens
 
-        # movie = movie_service.create(req_json)
-        # return "", 201, {"location": f"/movies/{movie.id}"}
-
     def put(self):
         req_json = request.json
-        token = req_json.get('refrash_token')
-        tokens = auth_service.approve_refrash_token(token)
-        return '', 201
+        token = req_json.get("refresh_token")
+        return auth_service.approve_refresh_token(token), 201

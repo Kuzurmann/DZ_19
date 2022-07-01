@@ -5,13 +5,8 @@ class UserDAO:
     def __init__(self, session):
         self.session = session
 
-    def get_all(self):
-        users = User.query.all()
-        return users
-
     def get_one(self, uid):
-        users = User.query.get(uid)
-        return users
+        return self.session.query(User).get(uid)
 
     def get_user_by_username(self, username):
         return self.session.query(User).filter(User.username == username).first()
@@ -22,12 +17,13 @@ class UserDAO:
         self.session.commit()
         return user_ent
 
-    def update(self, user):
+    def get_all_users(self):
+        return self.session.query(User).all()
+
+    def update(self, user_d):
+        user = self.get_one(user_d.get("id"))
+        user.username = user_d.get("username")
+        user.role = user_d.get("role")
+
         self.session.add(user)
         self.session.commit()
-        self.session.close()
-
-    def delete(self, user):
-        self.session.delete(user)
-        self.session.commit()
-        self.session.close()
